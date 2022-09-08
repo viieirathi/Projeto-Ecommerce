@@ -1,3 +1,4 @@
 # Keep environment variables out of version control
+.vscode
 /node_modules
 .env
