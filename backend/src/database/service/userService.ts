@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { IUser } from "../../interfaces/IUser";
+import { IUser } from "../interfaces/IUser";
 import StatusCode from "http-status-codes";
 
 const prisma = new PrismaClient();
