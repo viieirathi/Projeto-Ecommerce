@@ -1,14 +1,14 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
-import fs from "fs";
+import * as fs from "fs";
 
-const SECRET = fs.readFileSync("jwt.evaluation.key");
+const SECRET = fs.readFileSync("jwt.evaluation.key", "utf-8");
 
-const tokenAssign = (token: string) => {
+const tokenAssign = (token: { name: string; email: string }) => {
   return jwt.sign(token, SECRET, { expiresIn: "1d" });
 };
 
-const verifyToken = (token: string, SECRET: Buffer) => {
-  return jwt.verify(token, SECRET) as JwtPayload;
+const verifyToken = (token: string, secret: string) => {
+  return jwt.verify(token, secret) as JwtPayload;
 };
 
 export { tokenAssign, verifyToken, SECRET };

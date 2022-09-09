@@ -1,7 +1,7 @@
 import { Router } from "express";
 import userRouter from "./user";
 
-const routerIndex:Router = Router();
+const routerIndex: Router = Router();
 
 routerIndex.use('/user', userRouter)
 

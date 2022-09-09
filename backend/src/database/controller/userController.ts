@@ -17,11 +17,11 @@ const userCreateController = async (
           email,
           role,
           image,
-        }
+        };
         const { code, data } = await userServiceCreate(newUser);
         return res.status(code).json(data);
-      })
-    })
+      });
+    });
   } catch (error) {
     next(error);
   }
