@@ -5,4 +5,5 @@ import validateUser from "../middlewares/validateUser";
 const userRouter: Router = Router();
 userRouter.post('/', validateUser, userCreateController)
 
+
 export default userRouter

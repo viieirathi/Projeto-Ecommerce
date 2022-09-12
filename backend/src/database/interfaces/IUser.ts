@@ -8,3 +8,8 @@ export interface IUser {
   role: Role;
   image: string;
 }
+
+export interface ILogin {
+  email: string,
+  password: string
+}

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { userServiceCreate } from "../service/userService";
+import { userServiceCreate, userServiceLogin } from "../service/userService";
 import * as bcryptjs from "bcryptjs";
+import { StatusCodes } from "http-status-codes";
 
 const userCreateController = async (
   req: Request,
@@ -27,4 +28,18 @@ const userCreateController = async (
   }
 };
 
-export { userCreateController };
+const userLoginController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { email, password } = req.body;
+    const {code, data} = await userServiceLogin({ email, password });
+    return res.status(code).json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { userCreateController, userLoginController };
