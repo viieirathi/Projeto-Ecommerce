@@ -1,6 +1,6 @@
-import express from "express";
-import cors from "cors";
-import routerIndex from "../database/router/";
+import express from 'express';
+import cors from 'cors';
+import routerIndex from '../database/router';
 
 const app = express();
 app.use(express.json());

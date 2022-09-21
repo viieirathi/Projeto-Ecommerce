@@ -1,16 +1,17 @@
-import { NextFunction, Request, Response } from "express";
-import { userServiceCreate, userServiceLogin } from "../service/userService";
-import * as bcryptjs from "bcryptjs";
-import { StatusCodes } from "http-status-codes";
+import { NextFunction, Request, Response } from 'express';
+import * as bcryptjs from 'bcryptjs';
+import { userServiceCreate, userServiceLogin } from '../service/userService';
 
 const userCreateController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
-    const { name, password, email, role, image } = req.body;
-    bcryptjs.genSalt(10, async (err, salt) => {
+    const {
+      name, password, email, role, image,
+    } = req.body;
+    bcryptjs.genSalt(10, async (_err, salt) => {
       bcryptjs.hash(password, salt, async (err, hash) => {
         const newUser = {
           name,
@@ -31,14 +32,14 @@ const userCreateController = async (
 const userLoginController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const { email, password } = req.body;
-    const {code, data} = await userServiceLogin({ email, password });
+    const { code, data } = await userServiceLogin({ email, password });
     return res.status(code).json(data);
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 

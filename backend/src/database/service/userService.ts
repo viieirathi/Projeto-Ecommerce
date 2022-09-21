@@ -1,42 +1,49 @@
-import { PrismaClient } from "@prisma/client";
-import { ILogin, IUser } from "../interfaces/IUser";
-import StatusCode from "http-status-codes";
-import { tokenAssign } from "../utils/jwt";
-import * as bcryptjs from "bcryptjs";
+import { PrismaClient } from '@prisma/client';
+import StatusCode from 'http-status-codes';
+import * as bcryptjs from 'bcryptjs';
+import { ILogin, IUser } from '../interfaces/IUser';
+import { tokenAssign } from '../utils/jwt';
 
 export const prisma = new PrismaClient();
 
 const userServiceCreate = async (user: IUser) => {
-  const { name, email } = user;
+  const { email } = user;
   const userExist = await prisma.user.findUnique({ where: { email } });
-  if (userExist)
+  if (userExist) {
     return {
       code: StatusCode.UNAUTHORIZED,
-      data: { message: "Usuário já existe" },
+      data: { message: 'Usuário já existe' },
     };
-  const token = tokenAssign({ name, email });
+  }
   await prisma.user.create({ data: user });
-  return { code: StatusCode.CREATED, data: token };
+  return {
+    code: StatusCode.CREATED,
+    data: { message: 'Usuário criado com sucesso' },
+  };
 };
 
 const userServiceLogin = async (user: ILogin) => {
   const { email, password } = user;
   const userLogin = await prisma.user.findUnique({ where: { email } });
-  if (!userLogin)
+  if (!userLogin) {
     return {
       code: StatusCode.UNAUTHORIZED,
-      data: { message: "E-mail incorreto" },
+      data: { message: 'E-mail incorreto' },
     };
+  }
   const passCript = await bcryptjs.compare(password, userLogin.password);
-  if (!passCript)
+  if (!passCript) {
     return {
       code: StatusCode.UNAUTHORIZED,
-      data: { message: "Senha incorreta" },
+      data: { message: 'Senha incorreta' },
     };
-  const { name } = userLogin;
+  }
+  const { name, id, role } = userLogin;
   const token = tokenAssign({
     email,
     name,
+    id,
+    role,
   });
   return { code: StatusCode.ACCEPTED, data: token };
 };
