@@ -5,7 +5,8 @@
   "scripts": {
     "start": "ts-node src/database/server.ts",
     "dev": "nodemon --watch \"./src/**\" --ext \"ts,js\" --ignore \"src/**/*.spec.ts,src/**/*.json\" --exec \"ts-node src/api/server.ts\"",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint . --ext .ts",
+    "lint-and-fix": "eslint . --ext .ts --fix"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
@@ -14,10 +15,18 @@
     "@types/jsonwebtoken": "^8.5.9",
     "@types/node": "^18.7.15",
     "@types/nodemon": "^1.19.2",
-    "eslint": "^8.23.0",
+    "@typescript-eslint/eslint-plugin": "^5.38.0",
+    "@typescript-eslint/parser": "^5.38.0",
+    "eslint": "^8.23.1",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-standard-with-typescript": "^22.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
     "eslint-plugin-n": "^15.2.5",
     "eslint-plugin-promise": "^6.0.1",
+    "eslint-plugin-react": "^7.31.8",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "prisma": "^4.3.1",
     "ts-node": "^10.9.1",
     "typescript": "^4.8.3"
