@@ -93,9 +93,24 @@ const productServiceUpdate = async (product: IProductUp, id: number) => {
   };
 };
 
+const productServiceDelete = async (id: number) => {
+  await prisma.product.delete({
+    where: {
+      id,
+    },
+  });
+  return {
+    code: StatusCodes.OK,
+    data: {
+      message: 'Produto deletado com sucesso',
+    },
+  };
+};
+
 export {
   productServiceCreate,
   productServiceGetAll,
   productServiceGetId,
   productServiceUpdate,
+  productServiceDelete,
 };

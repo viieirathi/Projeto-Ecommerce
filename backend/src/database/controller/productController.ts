@@ -1,6 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import {
-  productServiceCreate, productServiceGetAll, productServiceGetId, productServiceUpdate,
+  productServiceCreate,
+  productServiceDelete,
+  productServiceGetAll,
+  productServiceGetId,
+  productServiceUpdate,
 } from '../service/productServices';
 
 const productCreateController = async (
@@ -55,7 +59,11 @@ const productGetIdController = async (
   }
 };
 
-const productUpdateController = async (req: Request, res: Response, next: NextFunction) => {
+const productUpdateController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { name_product, quantity, price } = req.body;
     const { id } = req.params;
@@ -71,9 +79,24 @@ const productUpdateController = async (req: Request, res: Response, next: NextFu
   }
 };
 
+const productDeleteController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { id } = req.params;
+    const { code, data } = await productServiceDelete(Number(id));
+    return res.status(code).json(data);
+  } catch (error) {
+    return next(error);
+  }
+};
+
 export {
   productCreateController,
   productGetAllController,
   productGetIdController,
   productUpdateController,
+  productDeleteController,
 };

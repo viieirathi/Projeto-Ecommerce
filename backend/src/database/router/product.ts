@@ -1,6 +1,10 @@
 import { Router } from 'express';
 import {
-  productCreateController, productGetAllController, productGetIdController, productUpdateController,
+  productCreateController,
+  productDeleteController,
+  productGetAllController,
+  productGetIdController,
+  productUpdateController,
 } from '../controller/productController';
 import { authenticateToken } from '../middlewares/authToken';
 
@@ -9,5 +13,6 @@ productRouter.post('/', authenticateToken, productCreateController);
 productRouter.get('/', authenticateToken, productGetAllController);
 productRouter.get('/:id', authenticateToken, productGetIdController);
 productRouter.put('/:id', authenticateToken, productUpdateController);
+productRouter.delete('/:id', authenticateToken, productDeleteController);
 
 export default productRouter;
