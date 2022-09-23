@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import { productServiceCreate, productServiceGetAll, productServiceGetId } from '../service/productServices';
+import {
+  productServiceCreate, productServiceGetAll, productServiceGetId, productServiceUpdate,
+} from '../service/productServices';
 
 const productCreateController = async (
   req: Request,
@@ -53,4 +55,25 @@ const productGetIdController = async (
   }
 };
 
-export { productCreateController, productGetAllController, productGetIdController };
+const productUpdateController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { name_product, quantity, price } = req.body;
+    const { id } = req.params;
+    const { code, data } = await productServiceUpdate(
+      {
+        name_product, quantity, price,
+      },
+      Number(id),
+    );
+    return res.status(code).json(data);
+  } catch (error) {
+    return next(error);
+  }
+};
+
+export {
+  productCreateController,
+  productGetAllController,
+  productGetIdController,
+  productUpdateController,
+};

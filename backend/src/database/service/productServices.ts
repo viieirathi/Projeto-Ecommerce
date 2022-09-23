@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { StatusCodes } from 'http-status-codes';
-import { IProduct } from '../interfaces/IProduct';
+import { IProduct, IProductUp } from '../interfaces/IProduct';
 
 const prisma = new PrismaClient();
 
@@ -70,4 +70,32 @@ const productServiceGetId = async (id: number) => {
   return { code: StatusCodes.OK, data: productId };
 };
 
-export { productServiceCreate, productServiceGetAll, productServiceGetId };
+const productServiceUpdate = async (product: IProductUp, id: number) => {
+  const {
+    name_product, quantity, price,
+  } = product;
+  await prisma.product.update({
+    where: {
+      id,
+    },
+    data: {
+      name_product,
+      quantity,
+      price,
+    },
+  });
+
+  return {
+    code: StatusCodes.OK,
+    data: {
+      message: 'Produto atualizado com sucesso',
+    },
+  };
+};
+
+export {
+  productServiceCreate,
+  productServiceGetAll,
+  productServiceGetId,
+  productServiceUpdate,
+};
