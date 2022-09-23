@@ -12,7 +12,10 @@ const categoryServiceCreate = async (category: ICategory) => {
       data: { message: 'Criação de categoria negada' },
     };
   }
-  await prisma.category.create({ data: { name_category } });
+  await prisma.category.create({
+    data: { name_category },
+  });
+
   return {
     code: StatusCodes.CREATED,
     data: { message: 'Categoria criada com sucesso' },

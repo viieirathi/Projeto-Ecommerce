@@ -1,33 +1,32 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  url      = env("DATABASE_URL")
   provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 model Product {
   id           Int      @id @default(autoincrement())
   name_product String
-  image        String   @db.VarChar(500)
-  id_user      User     @relation(fields: [user_id], references: [id])
-  category     Category @relation(fields: [category_id], references: [id])
-  category_id  Int
-  user_id      Int
   quantity     Int
   price        Float
+  image        String   @db.VarChar(500)
+  category_id  Int
+  user_id      Int
+  category     Category @relation(fields: [category_id], references: [id])
+  id_user      User     @relation(fields: [user_id], references: [id])
 
+  @@index([category_id], map: "products_category_id_fkey")
+  @@index([user_id], map: "products_user_id_fkey")
   @@map("products")
 }
 
 model Category {
   id            Int       @id @default(autoincrement())
-  product       Product[]
   name_category String    @db.VarChar(50)
+  product       Product[]
 
   @@map("categoryes")
 }

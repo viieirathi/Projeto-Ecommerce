@@ -11,7 +11,6 @@ const categoryCreateController = async (
       name_category,
       isvalidToken: { role },
     } = req.body;
-
     const { code, data } = await services.categoryServiceCreate({ name_category, role });
     return res.status(code).json(data);
   } catch (error) {
