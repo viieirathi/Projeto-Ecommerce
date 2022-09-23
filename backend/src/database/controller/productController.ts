@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { productServiceCreate, productServiceGetAll } from '../service/productServices';
+import { productServiceCreate, productServiceGetAll, productServiceGetId } from '../service/productServices';
 
 const productCreateController = async (
   req: Request,
@@ -10,13 +10,14 @@ const productCreateController = async (
     const {
       name_product, quantity, price, category, image, isvalidToken,
     } = req.body;
+
     const { id } = isvalidToken;
     const { code, data } = await productServiceCreate({
       name_product,
       quantity,
       price,
       image,
-      id_user: id,
+      user_id: id,
       name_category: category,
     });
     return res.status(code).json(data);
@@ -25,7 +26,11 @@ const productCreateController = async (
   }
 };
 
-const productGetAllController = async (req: Request, res: Response, next: NextFunction) => {
+const productGetAllController = async (
+  _req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { code, data } = await productServiceGetAll();
     return res.status(code).json(data);
@@ -34,4 +39,18 @@ const productGetAllController = async (req: Request, res: Response, next: NextFu
   }
 };
 
-export { productCreateController, productGetAllController };
+const productGetIdController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { id } = req.params;
+    const { code, data } = await productServiceGetId(Number(id));
+    return res.status(code).json(data);
+  } catch (error) {
+    return next(error);
+  }
+};
+
+export { productCreateController, productGetAllController, productGetIdController };

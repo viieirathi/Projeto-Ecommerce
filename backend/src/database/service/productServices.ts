@@ -6,17 +6,20 @@ const prisma = new PrismaClient();
 
 const productServiceCreate = async (product: IProduct) => {
   const {
-    name_category, id_user, quantity, price, image, name_product,
+    name_category, user_id, quantity, price, image, name_product,
   } = product;
+
   const categoryFind = await prisma.category.findFirst({
     where: { name_category },
   });
+
   if (!categoryFind) {
     return {
       code: StatusCodes.UNAUTHORIZED,
       data: { message: 'Categoria não existe' },
     };
   }
+
   await prisma.product.create({
     data: {
       name_product,
@@ -24,7 +27,7 @@ const productServiceCreate = async (product: IProduct) => {
       price,
       image,
       category: { connect: { id: categoryFind.id } },
-      id_user: { connect: { id: id_user } },
+      id_user: { connect: { id: user_id } },
     },
   });
   return {
@@ -46,4 +49,25 @@ const productServiceGetAll = async () => {
   return { code: StatusCodes.OK, data: productGetAll };
 };
 
-export { productServiceCreate, productServiceGetAll };
+const productServiceGetId = async (id: number) => {
+  const productId = await prisma.product.findUnique({
+    where: { id },
+    include: {
+      id_user: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
+  if (!productId) {
+    return {
+      code: StatusCodes.NOT_FOUND,
+      data: { message: 'Id não encontrado' },
+    };
+  }
+
+  return { code: StatusCodes.OK, data: productId };
+};
+
+export { productServiceCreate, productServiceGetAll, productServiceGetId };
